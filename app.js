@@ -57,6 +57,7 @@ function handleClickLeft(event) {
   console.log(event);
   totalClicks += 1;
   allProducts[chosenProductLeft].timesClicked += 1;
+  checkForButton();
   displayProduct();
 }
 
@@ -64,6 +65,7 @@ function handleClickCenter(event) {
   console.log(event);
   totalClicks += 1;
   allProducts[chosenProductCenter].timesClicked +=1;
+  checkForButton();
   displayProduct();
 }
 
@@ -71,6 +73,32 @@ function handleClickRight(event) {
   console.log(event);
   totalClicks +=1;
   allProducts[chosenProductRight].timesClicked +=1;
+  checkForButton();
   displayProduct();
 }
 //if allClicks => 15, button is not hidden.
+var resultsButton = document.getElementById('resultsButton');
+checkForButton();
+function checkForButton () {
+  if (totalClicks  < 15) {
+    console.log("totalClicks is: " + totalClicks);
+    resultsButton.style.display = 'none';
+  }
+  else {
+    resultsButton.style.display = 'block';
+  }
+}
+
+//event listener and handler for button
+resultsButton.addEventListener('click', handleButtonClick);
+
+function handleButtonClick(event) {
+  resultsDisplay = document.getElementById('resultsDisplay');
+  var displayList = document.createElement('ul');
+  for (i = 0; i < allProducts.length; i++) {
+    var productResults = document.createElement('li');
+    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks.';
+    displayList.appendChild(productResults);
+  }
+  resultsDisplay.appendChild(displayList);
+}
