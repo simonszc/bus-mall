@@ -4,6 +4,7 @@ function Product(productName, filePath) {
   this.filePath = filePath;
   this.timesClicked = 0;
 }
+var totalClicks = 0;
 //Place all 15 product objects into an array
 var allProducts = [new Product('bag', 'bag.jpg'),
                   new Product('banana', 'banana.jpg'),
@@ -21,24 +22,55 @@ var allProducts = [new Product('bag', 'bag.jpg'),
                   new Product('winer-glass', 'wine-glass.jpg')];
 
 //Display 3 Random, Unique Products for customer on page load. Create a function declaration, then call it.
+var chosenProductLeft = 0;
+var chosenProductCenter = 0;
+var chosenProductRight = 0;
+
 function displayProduct () {
-  var chosenProductLeft = Math.floor(Math.random()*allProducts.length);
+  chosenProductLeft = Math.floor(Math.random()*allProducts.length);
   document.getElementById('displayLeft').innerHTML = '<img src = "img/' + allProducts[chosenProductLeft].filePath + '">';
-  var chosenProductCenter = Math.floor(Math.random()*allProducts.length);
+  chosenProductCenter = Math.floor(Math.random()*allProducts.length);
   while (chosenProductCenter ===chosenProductLeft) {
     chosenProductCenter = Math.floor(Math.random()*allProducts.length);
   }
   document.getElementById('displayCenter').innerHTML = '<img src = "img/' + allProducts[chosenProductCenter].filePath + '">';
-  var chosenProductRight = Math.floor(Math.random()*allProducts.length);
+  chosenProductRight = Math.floor(Math.random()*allProducts.length);
   while (chosenProductRight === chosenProductLeft || chosenProductRight ===chosenProductCenter) {
     chosenProductRight = Math.floor(Math.random()*allProducts.length);
   }
   document.getElementById('displayRight').innerHTML = '<img src = "img/' + allProducts[chosenProductRight].filePath + '">';
 }
+
 displayProduct();
 
 //Event Listeners for all three displays
+var displayLeft = document.getElementById('displayLeft');
+var displayCenter = document.getElementById('displayCenter');
+var displayRight = document.getElementById('displayRight');
+
+displayLeft.addEventListener('click', handleClickLeft);
+displayCenter.addEventListener('click', handleClickCenter);
+displayRight.addEventListener('click', handleClickRight);
 
 //Event handlers for all three displays. Should increment counter for clicked product, and display three new random, unique products
+function handleClickLeft(event) {
+  console.log(event);
+  totalClicks += 1;
+  allProducts[chosenProductLeft].timesClicked += 1;
+  displayProduct();
+}
 
+function handleClickCenter(event) {
+  console.log(event);
+  totalClicks += 1;
+  allProducts[chosenProductCenter].timesClicked +=1;
+  displayProduct();
+}
+
+function handleClickRight(event) {
+  console.log(event);
+  totalClicks +=1;
+  allProducts[chosenProductRight].timesClicked +=1;
+  displayProduct();
+}
 //if allClicks => 15, button is not hidden.
