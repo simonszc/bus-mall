@@ -20,7 +20,22 @@ var allProducts = [new Product('bag', 'bag.jpg'),
                   new Product('water-can', 'water-can.jpg'),
                   new Product('winer-glass', 'wine-glass.jpg')];
 
-//Display 3 Random, Unique Products for customer on page load.
+//Display 3 Random, Unique Products for customer on page load. Create a function declaration, then call it.
+function displayProduct () {
+  var chosenProductLeft = Math.floor(Math.random()*allProducts.length);
+  document.getElementById('displayLeft').innerHTML = '<img src = "img/' + allProducts[chosenProductLeft].filePath + '">';
+  var chosenProductCenter = Math.floor(Math.random()*allProducts.length);
+  while (chosenProductCenter ===chosenProductLeft) {
+    chosenProductCenter = Math.floor(Math.random()*allProducts.length);
+  }
+  document.getElementById('displayCenter').innerHTML = '<img src = "img/' + allProducts[chosenProductCenter].filePath + '">';
+  var chosenProductRight = Math.floor(Math.random()*allProducts.length);
+  while (chosenProductRight === chosenProductLeft || chosenProductRight ===chosenProductCenter) {
+    chosenProductRight = Math.floor(Math.random()*allProducts.length);
+  }
+  document.getElementById('displayRight').innerHTML = '<img src = "img/' + allProducts[chosenProductRight].filePath + '">';
+}
+displayProduct();
 
 //Event Listeners for all three displays
 
