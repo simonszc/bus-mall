@@ -108,6 +108,7 @@ function checkForButton () {
 resultsButton.addEventListener('click', handleButtonClick);
 
 function handleButtonClick(event) {
+  resultsButton.textContent = 'Display Updated Results';
   resultsDisplay = document.getElementById('resultsDisplay');
   resultsDisplay.textContent = '';
   var displayList = document.createElement('ul');
