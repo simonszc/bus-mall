@@ -1,3 +1,5 @@
+'use strict';
+
 //create object constructor for products, and Global allClicks counter
 function Product(productName, filePath) {
   this.productName = productName;
@@ -44,7 +46,7 @@ function displayProduct () {
     displayedProductCenter = Math.floor(Math.random()*allProducts.length);
   }
   displayCenter.innerHTML = '<img src = "img/' + allProducts[displayedProductCenter].filePath + '">';
-  
+
   displayedProductRight = Math.floor(Math.random()*allProducts.length);
   while (displayedProductRight === displayedProductLeft || displayedProductRight === displayedProductCenter) {
     displayedProductRight = Math.floor(Math.random()*allProducts.length);
@@ -111,10 +113,10 @@ resultsButton.addEventListener('click', handleButtonClick);
 
 function handleButtonClick(event) {
   resultsButton.textContent = 'Display Updated Results';
-  resultsDisplay = document.getElementById('resultsDisplay');
+  var resultsDisplay = document.getElementById('resultsDisplay');
   resultsDisplay.textContent = '';
   var displayList = document.createElement('ul');
-  for (i = 0; i < allProducts.length; i++) {
+  for (var i = 0; i < allProducts.length; i++) {
     allProducts[i].findPercentClicked();
     var productResults = document.createElement('li');
     productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
