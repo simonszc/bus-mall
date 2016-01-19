@@ -4,7 +4,12 @@ function Product(productName, filePath) {
   this.filePath = filePath;
   this.timesClicked = 0;
   this.timesDisplayed = 0;
+  this.percentClicked = 0;
 }
+
+// Product.prototype.findPercentClicked = function() {
+//   this.percentClicked = (this.timesClicked / this.timesDisplayed).toFixed(2) * 100;
+// }
 var totalClicks = 0;
 //Place all 15 product objects into an array
 var allProducts = [new Product('bag', 'bag.jpg'),
@@ -107,8 +112,9 @@ function handleButtonClick(event) {
   resultsDisplay.textContent = '';
   var displayList = document.createElement('ul');
   for (i = 0; i < allProducts.length; i++) {
+    // allProducts[i].findPercentClicked();
     var productResults = document.createElement('li');
-    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times.';
+    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + (allProducts[i].timesClicked / allProducts[i].timesDisplayed).toFixed(2) * 100 + '% selection rate';
     displayList.appendChild(productResults);
   }
   resultsDisplay.appendChild(displayList);
