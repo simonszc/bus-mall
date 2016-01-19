@@ -31,28 +31,30 @@ var allProducts = [new Product('bag', 'bag.jpg'),
 var displayedProductLeft = 0;
 var displayedProductCenter = 0;
 var displayedProductRight = 0;
+var displayLeft = document.getElementById('displayLeft');
+var displayCenter = document.getElementById('displayCenter');
+var displayRight = document.getElementById('displayRight');
 
 function displayProduct () {
   displayedProductLeft = Math.floor(Math.random()*allProducts.length);
-  document.getElementById('displayLeft').innerHTML = '<img src = "img/' + allProducts[displayedProductLeft].filePath + '">';
+  displayLeft.innerHTML = '<img src = "img/' + allProducts[displayedProductLeft].filePath + '">';
+
   displayedProductCenter = Math.floor(Math.random()*allProducts.length);
   while (displayedProductCenter === displayedProductLeft) {
     displayedProductCenter = Math.floor(Math.random()*allProducts.length);
   }
-  document.getElementById('displayCenter').innerHTML = '<img src = "img/' + allProducts[displayedProductCenter].filePath + '">';
+  displayCenter.innerHTML = '<img src = "img/' + allProducts[displayedProductCenter].filePath + '">';
+  
   displayedProductRight = Math.floor(Math.random()*allProducts.length);
   while (displayedProductRight === displayedProductLeft || displayedProductRight === displayedProductCenter) {
     displayedProductRight = Math.floor(Math.random()*allProducts.length);
   }
-  document.getElementById('displayRight').innerHTML = '<img src = "img/' + allProducts[displayedProductRight].filePath + '">';
+  displayRight.innerHTML = '<img src = "img/' + allProducts[displayedProductRight].filePath + '">';
 }
 
 displayProduct();
 
 //Event Listeners for all three displays
-var displayLeft = document.getElementById('displayLeft');
-var displayCenter = document.getElementById('displayCenter');
-var displayRight = document.getElementById('displayRight');
 
 displayLeft.addEventListener('click', handleClickLeft);
 displayCenter.addEventListener('click', handleClickCenter);
