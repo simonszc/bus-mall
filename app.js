@@ -3,6 +3,7 @@ function Product(productName, filePath) {
   this.productName = productName;
   this.filePath = filePath;
   this.timesClicked = 0;
+  this.timesDisplayed = 0;
 }
 var totalClicks = 0;
 //Place all 15 product objects into an array
@@ -30,12 +31,12 @@ function displayProduct () {
   chosenProductLeft = Math.floor(Math.random()*allProducts.length);
   document.getElementById('displayLeft').innerHTML = '<img src = "img/' + allProducts[chosenProductLeft].filePath + '">';
   chosenProductCenter = Math.floor(Math.random()*allProducts.length);
-  while (chosenProductCenter ===chosenProductLeft) {
+  while (chosenProductCenter === chosenProductLeft) {
     chosenProductCenter = Math.floor(Math.random()*allProducts.length);
   }
   document.getElementById('displayCenter').innerHTML = '<img src = "img/' + allProducts[chosenProductCenter].filePath + '">';
   chosenProductRight = Math.floor(Math.random()*allProducts.length);
-  while (chosenProductRight === chosenProductLeft || chosenProductRight ===chosenProductCenter) {
+  while (chosenProductRight === chosenProductLeft || chosenProductRight === chosenProductCenter) {
     chosenProductRight = Math.floor(Math.random()*allProducts.length);
   }
   document.getElementById('displayRight').innerHTML = '<img src = "img/' + allProducts[chosenProductRight].filePath + '">';
@@ -57,6 +58,9 @@ function handleClickLeft(event) {
   console.log(event);
   totalClicks += 1;
   allProducts[chosenProductLeft].timesClicked += 1;
+  allProducts[chosenProductLeft].timesDisplayed +=1;
+  allProducts[chosenProductCenter].timesDisplayed +=1;
+  allProducts[chosenProductRight].timesDisplayed +=1;
   checkForButton();
   displayProduct();
 }
@@ -65,6 +69,9 @@ function handleClickCenter(event) {
   console.log(event);
   totalClicks += 1;
   allProducts[chosenProductCenter].timesClicked +=1;
+  allProducts[chosenProductLeft].timesDisplayed +=1;
+  allProducts[chosenProductCenter].timesDisplayed +=1;
+  allProducts[chosenProductRight].timesDisplayed +=1;
   checkForButton();
   displayProduct();
 }
@@ -73,6 +80,9 @@ function handleClickRight(event) {
   console.log(event);
   totalClicks +=1;
   allProducts[chosenProductRight].timesClicked +=1;
+  allProducts[chosenProductLeft].timesDisplayed +=1;
+  allProducts[chosenProductCenter].timesDisplayed +=1;
+  allProducts[chosenProductRight].timesDisplayed +=1;
   checkForButton();
   displayProduct();
 }
@@ -94,10 +104,11 @@ resultsButton.addEventListener('click', handleButtonClick);
 
 function handleButtonClick(event) {
   resultsDisplay = document.getElementById('resultsDisplay');
+  resultsDisplay.textContent = '';
   var displayList = document.createElement('ul');
   for (i = 0; i < allProducts.length; i++) {
     var productResults = document.createElement('li');
-    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks.';
+    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times.';
     displayList.appendChild(productResults);
   }
   resultsDisplay.appendChild(displayList);
