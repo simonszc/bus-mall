@@ -108,8 +108,8 @@ function handleButtonClick(event) {
   	labels : [],
   	datasets : [
   		{
-  			fillColor : "#48A497",
-  			strokeColor : "#48A4D1",
+  			fillColor : "#B1FFFF",
+  			strokeColor : "black",
   			data : []
   		},
   	]
@@ -118,6 +118,7 @@ function handleButtonClick(event) {
     barData.labels.push(allProducts[i].productName);
     barData.datasets[0].data.push(allProducts[i].findPercentClicked());
   }
+
 
   var results = document.getElementById("resultsChart").getContext("2d");
   new Chart(results).Bar(barData);
