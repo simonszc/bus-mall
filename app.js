@@ -6,9 +6,8 @@ function Product(productName, filePath) {
   this.filePath = filePath;
   this.timesClicked = 0;
   this.timesDisplayed = 0;
-  this.percentClicked = 0;
   this.findPercentClicked = function() {
-    this.percentClicked = (this.timesClicked / this.timesDisplayed).toFixed(2) * 100;
+    return (this.timesClicked / this.timesDisplayed).toFixed(2) * 100;
   }
 }
 
@@ -63,37 +62,29 @@ displayCenter.addEventListener('click', handleClickCenter);
 displayRight.addEventListener('click', handleClickRight);
 
 //Event handlers for all three displays. Should increment counter for clicked product, and display three new random, unique products
-function handleClickLeft(event) {
+
+function genericClickMethods() {
   console.log(event);
-  totalClicks += 1;
-  allProducts[displayedProductLeft].timesClicked += 1;
+  totalClicks +=1;
   allProducts[displayedProductLeft].timesDisplayed +=1;
   allProducts[displayedProductCenter].timesDisplayed +=1;
   allProducts[displayedProductRight].timesDisplayed +=1;
   checkForButton();
   displayProduct();
+}
+function handleClickLeft(event) {
+  allProducts[displayedProductLeft].timesClicked += 1;
+  genericClickMethods();
 }
 
 function handleClickCenter(event) {
-  console.log(event);
-  totalClicks += 1;
   allProducts[displayedProductCenter].timesClicked +=1;
-  allProducts[displayedProductLeft].timesDisplayed +=1;
-  allProducts[displayedProductCenter].timesDisplayed +=1;
-  allProducts[displayedProductRight].timesDisplayed +=1;
-  checkForButton();
-  displayProduct();
+  genericClickMethods();
 }
 
 function handleClickRight(event) {
-  console.log(event);
-  totalClicks +=1;
   allProducts[displayedProductRight].timesClicked +=1;
-  allProducts[displayedProductLeft].timesDisplayed +=1;
-  allProducts[displayedProductCenter].timesDisplayed +=1;
-  allProducts[displayedProductRight].timesDisplayed +=1;
-  checkForButton();
-  displayProduct();
+  genericClickMethods();
 }
 //if allClicks => 15, button is not hidden.
 var resultsButton = document.getElementById('resultsButton');
@@ -113,14 +104,24 @@ resultsButton.addEventListener('click', handleButtonClick);
 
 function handleButtonClick(event) {
   resultsButton.textContent = 'Display Updated Results';
-  var resultsDisplay = document.getElementById('resultsDisplay');
-  resultsDisplay.textContent = '';
-  var displayList = document.createElement('ul');
-  for (var i = 0; i < allProducts.length; i++) {
-    allProducts[i].findPercentClicked();
-    var productResults = document.createElement('li');
-    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
-    displayList.appendChild(productResults);
+  var barData = {
+  	labels : [],
+  	datasets : [
+  		{
+  			fillColor : "#48A497",
+  			strokeColor : "#48A4D1",
+  			data : []
+  		},
+  	]
   }
-  resultsDisplay.appendChild(displayList);
+  for (var i=0; i<allProducts.length; i++) {
+    barData.labels.push(allProducts[i].productName);
+    barData.datasets[0].data.push(allProducts[i].findPercentClicked());
+  }
+
+
+  var results = document.getElementById("resultsChart").getContext("2d");
+  new Chart(results).Bar(barData);
 }
+
+//chart stuff
