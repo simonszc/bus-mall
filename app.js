@@ -119,7 +119,6 @@ function handleButtonClick(event) {
     barData.datasets[0].data.push(allProducts[i].findPercentClicked());
   }
 
-
   var results = document.getElementById("resultsChart").getContext("2d");
   new Chart(results).Bar(barData);
 }
