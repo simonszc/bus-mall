@@ -27,6 +27,7 @@ var allProducts = [new Product('bag', 'bag.jpg'),
                   new Product('usb', 'usb.jpg'),
                   new Product('water-can', 'water-can.jpg'),
                   new Product('winer-glass', 'wine-glass.jpg')];
+var alreadyDisplayed = [];
 
 //Display 3 Random, Unique Products for customer on page load. Create a function declaration, then call it.
 var displayedProductLeft = 0;
@@ -69,6 +70,15 @@ function genericClickMethods() {
   allProducts[displayedProductLeft].timesDisplayed +=1;
   allProducts[displayedProductCenter].timesDisplayed +=1;
   allProducts[displayedProductRight].timesDisplayed +=1;
+  if (alreadyDisplayed.indexOf(displayedProductLeft) === -1) {
+    alreadyDisplayed.push(displayedProductLeft);
+  }
+  if (alreadyDisplayed.indexOf(displayedProductCenter) === -1) {
+    alreadyDisplayed.push(displayedProductCenter);
+  }
+  if (alreadyDisplayed.indexOf(displayedProductRight) === -1) {
+    alreadyDisplayed.push(displayedProductRight);
+  }
   checkForButton();
   displayProduct();
 }
@@ -90,7 +100,7 @@ function handleClickRight(event) {
 var resultsButton = document.getElementById('resultsButton');
 checkForButton();
 function checkForButton () {
-  if (totalClicks  < 15) {
+  if (totalClicks  < 15 || alreadyDisplayed.length < 14) {
     console.log("totalClicks is: " + totalClicks);
     resultsButton.style.display = 'none';
   }
