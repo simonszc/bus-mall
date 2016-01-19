@@ -1,11 +1,34 @@
+*{
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
 .productContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 5%;
+  background-color: #B1FFFF;
+  border-style: double;
+  border-width: 2px;
 }
 .productContainer>section {
   display: inline;
+  width: 25%;
+  border-style: double;
+  border-width: 2px;
+  cursor: pointer;
 }
 .productContainer img {
-  width: 30em;
+  width: 100%;
+}
+#resultsButton {
+  margin: 1em auto;
+  padding: .75em 2em;
+  font-size: 150%;
+  font-weight: bold;
+  border-color: black;
+  border-style: double;
+  border-width: 2px;
+  background-color: #B1FFFF;
+  cursor: pointer;
 }
