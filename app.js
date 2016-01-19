@@ -23,23 +23,23 @@ var allProducts = [new Product('bag', 'bag.jpg'),
                   new Product('winer-glass', 'wine-glass.jpg')];
 
 //Display 3 Random, Unique Products for customer on page load. Create a function declaration, then call it.
-var chosenProductLeft = 0;
-var chosenProductCenter = 0;
-var chosenProductRight = 0;
+var displayedProductLeft = 0;
+var displayedProductCenter = 0;
+var displayedProductRight = 0;
 
 function displayProduct () {
-  chosenProductLeft = Math.floor(Math.random()*allProducts.length);
-  document.getElementById('displayLeft').innerHTML = '<img src = "img/' + allProducts[chosenProductLeft].filePath + '">';
-  chosenProductCenter = Math.floor(Math.random()*allProducts.length);
-  while (chosenProductCenter === chosenProductLeft) {
-    chosenProductCenter = Math.floor(Math.random()*allProducts.length);
+  displayedProductLeft = Math.floor(Math.random()*allProducts.length);
+  document.getElementById('displayLeft').innerHTML = '<img src = "img/' + allProducts[displayedProductLeft].filePath + '">';
+  displayedProductCenter = Math.floor(Math.random()*allProducts.length);
+  while (displayedProductCenter === displayedProductLeft) {
+    displayedProductCenter = Math.floor(Math.random()*allProducts.length);
   }
-  document.getElementById('displayCenter').innerHTML = '<img src = "img/' + allProducts[chosenProductCenter].filePath + '">';
-  chosenProductRight = Math.floor(Math.random()*allProducts.length);
-  while (chosenProductRight === chosenProductLeft || chosenProductRight === chosenProductCenter) {
-    chosenProductRight = Math.floor(Math.random()*allProducts.length);
+  document.getElementById('displayCenter').innerHTML = '<img src = "img/' + allProducts[displayedProductCenter].filePath + '">';
+  displayedProductRight = Math.floor(Math.random()*allProducts.length);
+  while (displayedProductRight === displayedProductLeft || displayedProductRight === displayedProductCenter) {
+    displayedProductRight = Math.floor(Math.random()*allProducts.length);
   }
-  document.getElementById('displayRight').innerHTML = '<img src = "img/' + allProducts[chosenProductRight].filePath + '">';
+  document.getElementById('displayRight').innerHTML = '<img src = "img/' + allProducts[displayedProductRight].filePath + '">';
 }
 
 displayProduct();
@@ -57,10 +57,10 @@ displayRight.addEventListener('click', handleClickRight);
 function handleClickLeft(event) {
   console.log(event);
   totalClicks += 1;
-  allProducts[chosenProductLeft].timesClicked += 1;
-  allProducts[chosenProductLeft].timesDisplayed +=1;
-  allProducts[chosenProductCenter].timesDisplayed +=1;
-  allProducts[chosenProductRight].timesDisplayed +=1;
+  allProducts[displayedProductLeft].timesClicked += 1;
+  allProducts[displayedProductLeft].timesDisplayed +=1;
+  allProducts[displayedProductCenter].timesDisplayed +=1;
+  allProducts[displayedProductRight].timesDisplayed +=1;
   checkForButton();
   displayProduct();
 }
@@ -68,10 +68,10 @@ function handleClickLeft(event) {
 function handleClickCenter(event) {
   console.log(event);
   totalClicks += 1;
-  allProducts[chosenProductCenter].timesClicked +=1;
-  allProducts[chosenProductLeft].timesDisplayed +=1;
-  allProducts[chosenProductCenter].timesDisplayed +=1;
-  allProducts[chosenProductRight].timesDisplayed +=1;
+  allProducts[displayedProductCenter].timesClicked +=1;
+  allProducts[displayedProductLeft].timesDisplayed +=1;
+  allProducts[displayedProductCenter].timesDisplayed +=1;
+  allProducts[displayedProductRight].timesDisplayed +=1;
   checkForButton();
   displayProduct();
 }
@@ -79,10 +79,10 @@ function handleClickCenter(event) {
 function handleClickRight(event) {
   console.log(event);
   totalClicks +=1;
-  allProducts[chosenProductRight].timesClicked +=1;
-  allProducts[chosenProductLeft].timesDisplayed +=1;
-  allProducts[chosenProductCenter].timesDisplayed +=1;
-  allProducts[chosenProductRight].timesDisplayed +=1;
+  allProducts[displayedProductRight].timesClicked +=1;
+  allProducts[displayedProductLeft].timesDisplayed +=1;
+  allProducts[displayedProductCenter].timesDisplayed +=1;
+  allProducts[displayedProductRight].timesDisplayed +=1;
   checkForButton();
   displayProduct();
 }
