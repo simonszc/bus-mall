@@ -30,9 +30,7 @@ var allProducts = [new Product('bag', 'bag.jpg'),
 var alreadyDisplayed = [];
 
 //Display 3 Random, Unique Products for customer on page load. Create a function declaration, then call it.
-var displayedProductLeft = 0;
-var displayedProductCenter = 0;
-var displayedProductRight = 0;
+var displayedProductLeft, displayedProductCenter, displayedProductRight;
 var displayLeft = document.getElementById('displayLeft');
 var displayCenter = document.getElementById('displayCenter');
 var displayRight = document.getElementById('displayRight');
@@ -119,10 +117,10 @@ function renderList() {
   resultsDisplay.appendChild(errorMessage);
   var displayList = document.createElement('ul');
   for (var i = 0; i < allProducts.length; i++) {
-  allProducts[i].findPercentClicked();
-  var productResults = document.createElement('li');
-  productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
-  displayList.appendChild(productResults);
+    allProducts[i].findPercentClicked();
+    var productResults = document.createElement('li');
+    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].findPercentClicked() + '% selection rate';
+    displayList.appendChild(productResults);
   }
   resultsDisplay.appendChild(displayList);
 }
@@ -136,11 +134,17 @@ function createRawClicksChart() {
         strokeColor : "black",
         data : []
       },
+      {
+        fillColor: '#0E00C4',
+        strokeColor: 'black',
+        data: []
+      }
     ]
   }
   for (var i=0; i<allProducts.length; i++) {
     rawBarData.labels.push(allProducts[i].productName);
     rawBarData.datasets[0].data.push(allProducts[i].timesClicked);
+    rawBarData.datasets[1].data.push(allProducts[i].timesDisplayed);
   }
   var rawResults = document.getElementById("rawResultsChart").getContext("2d");
   new Chart(rawResults).Bar(rawBarData);
@@ -150,7 +154,7 @@ function createPercentClickedChart() {
     labels: [],
     datasets: [
       {
-        fillColor: '#0E00C4',
+        fillColor: '#B1FFFF',
         strokeColor: 'black',
         data: []
       },
@@ -171,7 +175,7 @@ function handleButtonClick(event) {
   } else {
     resultsButton.textContent = 'Display Updated Results';
     var resultsDisplay = document.getElementById('resultsDisplay');
-    resultsDisplay.textContent = 'Left chart displays # of times each item was picked by user. Right chart displays the % of the time the user chose each item (times it was clicked/times user was shown item)';
+    resultsDisplay.textContent = 'Left chart displays # of times each item was picked by user AND # of times user was shown each item. Right chart displays the % of the time the user chose each item (times it was clicked/times user was shown item)';
     createRawClicksChart();
     createPercentClickedChart();
   }
