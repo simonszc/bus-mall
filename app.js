@@ -117,6 +117,9 @@ function handleButtonClick(event) {
     resultsButton.textContent = 'Display Updated Results';
     var resultsDisplay = document.getElementById('resultsDisplay');
     resultsDisplay.textContent = '';
+    var errorMessage = document.createElement('p');
+    errorMessage.textContent = 'This data will render in a chart once all products have been displayed once. Thus far, ' + alreadyDisplayed.length + ' products have been displayed.';
+    resultsDisplay.appendChild(errorMessage);
     var displayList = document.createElement('ul');
     for (var i = 0; i < allProducts.length; i++) {
     allProducts[i].findPercentClicked();
@@ -128,7 +131,7 @@ function handleButtonClick(event) {
   } else {
     resultsButton.textContent = 'Display Updated Results';
     var resultsDisplay = document.getElementById('resultsDisplay');
-    resultsDisplay.textContent = '';
+    resultsDisplay.textContent = 'Displaying # of times each item was picked by user divided by # of times the user was shown the item, in percents';
     var barData = {
     	labels : [],
     	datasets : [
