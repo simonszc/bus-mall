@@ -115,7 +115,7 @@ resultsButton.addEventListener('click', handleButtonClick);
 function renderList() {
   resultsDisplay.textContent = '';
   var errorMessage = document.createElement('p');
-  errorMessage.textContent = 'This data will render in a chart once all ' + allProducts.length + ' products have been displayed once. Thus far, ' + alreadyDisplayed.length + ' products have been displayed.';
+  errorMessage.textContent = 'You can click "Display Updated Results" to render this in a chart once all ' + allProducts.length + ' products have been displayed at least once (you will have to click an item one last time once your final item appears before updating as well). Thus far, ' + alreadyDisplayed.length + ' products have been displayed.';
   resultsDisplay.appendChild(errorMessage);
   var displayList = document.createElement('ul');
   for (var i = 0; i < allProducts.length; i++) {
@@ -171,7 +171,7 @@ function handleButtonClick(event) {
   } else {
     resultsButton.textContent = 'Display Updated Results';
     var resultsDisplay = document.getElementById('resultsDisplay');
-    resultsDisplay.textContent = 'Left chart displays # of times each item was picked by user. Right chart displays # times each item was picked divided by # of times it was displayed, in percentages';
+    resultsDisplay.textContent = 'Left chart displays # of times each item was picked by user. Right chart displays the % of the time the user chose each item (times it was clicked/times user was shown item)';
     createRawClicksChart();
     createPercentClickedChart();
   }
