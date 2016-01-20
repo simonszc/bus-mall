@@ -112,58 +112,68 @@ function checkForButton () {
 //event listener and handler for button
 resultsButton.addEventListener('click', handleButtonClick);
 
+function renderList() {
+  resultsDisplay.textContent = '';
+  var errorMessage = document.createElement('p');
+  errorMessage.textContent = 'This data will render in a chart once all ' + allProducts.length + ' products have been displayed once. Thus far, ' + alreadyDisplayed.length + ' products have been displayed.';
+  resultsDisplay.appendChild(errorMessage);
+  var displayList = document.createElement('ul');
+  for (var i = 0; i < allProducts.length; i++) {
+  allProducts[i].findPercentClicked();
+  var productResults = document.createElement('li');
+  productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
+  displayList.appendChild(productResults);
+  }
+  resultsDisplay.appendChild(displayList);
+}
+
+function createRawClicksChart() {
+  var rawBarData = {
+    labels : [],
+    datasets : [
+      {
+        fillColor : "#B1FFFF",
+        strokeColor : "black",
+        data : []
+      },
+    ]
+  }
+  for (var i=0; i<allProducts.length; i++) {
+    rawBarData.labels.push(allProducts[i].productName);
+    rawBarData.datasets[0].data.push(allProducts[i].timesClicked);
+  }
+  var rawResults = document.getElementById("rawResultsChart").getContext("2d");
+  new Chart(rawResults).Bar(rawBarData);
+}
+function createPercentClickedChart() {
+  var percentBarData = {
+    labels: [],
+    datasets: [
+      {
+        fillColor: '#0E00C4',
+        strokeColor: 'black',
+        data: []
+      },
+    ]
+  }
+  for (var i = 0; i < allProducts.length; i ++) {
+    percentBarData.labels.push(allProducts[i].productName);
+    percentBarData.datasets[0].data.push(allProducts[i].findPercentClicked());
+  }
+  var percentResults = document.getElementById('percentResultsChart').getContext('2d');
+  new Chart(percentResults).Bar(percentBarData);
+}
 function handleButtonClick(event) {
   if (alreadyDisplayed.length<14) {
     resultsButton.textContent = 'Display Updated Results';
     var resultsDisplay = document.getElementById('resultsDisplay');
-    resultsDisplay.textContent = '';
-    var errorMessage = document.createElement('p');
-    errorMessage.textContent = 'This data will render in a chart once all ' + allProducts.length + ' products have been displayed once. Thus far, ' + alreadyDisplayed.length + ' products have been displayed.';
-    resultsDisplay.appendChild(errorMessage);
-    var displayList = document.createElement('ul');
-    for (var i = 0; i < allProducts.length; i++) {
-    allProducts[i].findPercentClicked();
-    var productResults = document.createElement('li');
-    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
-    displayList.appendChild(productResults);
-    }
-    resultsDisplay.appendChild(displayList);
+    renderList();
   } else {
     resultsButton.textContent = 'Display Updated Results';
     var resultsDisplay = document.getElementById('resultsDisplay');
     resultsDisplay.textContent = 'Left chart displays # of times each item was picked by user. Right chart displays # times each item was picked divided by # of times it was displayed, in percentages';
-    var rawBarData = {
-    	labels : [],
-    	datasets : [
-    		{
-    			fillColor : "#B1FFFF",
-    			strokeColor : "black",
-    			data : []
-    		},
-    	]
-    }
-    for (var i=0; i<allProducts.length; i++) {
-      rawBarData.labels.push(allProducts[i].productName);
-      rawBarData.datasets[0].data.push(allProducts[i].timesClicked);
-    }
-    var rawResults = document.getElementById("rawResultsChart").getContext("2d");
-    new Chart(rawResults).Bar(rawBarData);
-    var percentBarData = {
-      labels: [],
-      datasets: [
-        {
-          fillColor: '#0E00C4',
-          strokeColor: 'black',
-          data: []
-        },
-      ]
-    }
-    for (var i = 0; i < allProducts.length; i ++) {
-      percentBarData.labels.push(allProducts[i].productName);
-      percentBarData.datasets[0].data.push(allProducts[i].findPercentClicked());
-    }
-    var percentResults = document.getElementById('percentResultsChart').getContext('2d');
-    new Chart(percentResults).Bar(percentBarData);
+    createRawClicksChart();
+    createPercentClickedChart();
   }
 }
 
