@@ -100,7 +100,7 @@ function handleClickRight(event) {
 var resultsButton = document.getElementById('resultsButton');
 checkForButton();
 function checkForButton () {
-  if (totalClicks  < 15 || alreadyDisplayed.length < 14) {
+  if (totalClicks  < 15) {
     console.log("totalClicks is: " + totalClicks);
     resultsButton.style.display = 'none';
   }
@@ -113,25 +113,40 @@ function checkForButton () {
 resultsButton.addEventListener('click', handleButtonClick);
 
 function handleButtonClick(event) {
-  resultsButton.textContent = 'Display Updated Results';
-  var barData = {
-  	labels : [],
-  	datasets : [
-  		{
-  			fillColor : "#B1FFFF",
-  			strokeColor : "black",
-  			data : []
-  		},
-  	]
-  }
-  for (var i=0; i<allProducts.length; i++) {
-    barData.labels.push(allProducts[i].productName);
-    barData.datasets[0].data.push(allProducts[i].findPercentClicked());
-  }
+  if (alreadyDisplayed.length<14) {
+    resultsButton.textContent = 'Display Updated Results';
+    var resultsDisplay = document.getElementById('resultsDisplay');
+    resultsDisplay.textContent = '';
+    var displayList = document.createElement('ul');
+    for (var i = 0; i < allProducts.length; i++) {
+    allProducts[i].findPercentClicked();
+    var productResults = document.createElement('li');
+    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
+    displayList.appendChild(productResults);
+    }
+    resultsDisplay.appendChild(displayList);
+  } else {
+    resultsButton.textContent = 'Display Updated Results';
+    var resultsDisplay = document.getElementById('resultsDisplay');
+    resultsDisplay.textContent = '';
+    var barData = {
+    	labels : [],
+    	datasets : [
+    		{
+    			fillColor : "#B1FFFF",
+    			strokeColor : "black",
+    			data : []
+    		},
+    	]
+    }
+    for (var i=0; i<allProducts.length; i++) {
+      barData.labels.push(allProducts[i].productName);
+      barData.datasets[0].data.push(allProducts[i].findPercentClicked());
+    }
 
-
-  var results = document.getElementById("resultsChart").getContext("2d");
-  new Chart(results).Bar(barData);
+    var results = document.getElementById("resultsChart").getContext("2d");
+    new Chart(results).Bar(barData);
+  }
 }
 
 //chart stuff
