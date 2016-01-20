@@ -3,28 +3,38 @@
   <head>
     <meta charset="utf-8"/>
     <title>Canvas tutorial</title>
-    <script type="text/javascript">
-      function draw(){
-        var canvas = document.getElementById('tutorial');
-        if (canvas.getContext){
-          var ctx = canvas.getContext('2d');
-
-          ctx.fillStyle = "rgb(200,0,0)";
-          ctx.fillRect (10, 10, 55, 50);
-ctx.fillRect (10, 10, 55, 50);
-
-          ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-          ctx.fillRect (30, 30, 55, 50);
-          ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-          ctx.fillRect (30, 30, 55, 50);
-        }
-      }
-    </script>
+    <script src="Chart.min.js">  </script>
     <style type="text/css">
       canvas { border: 1px solid black; }
     </style>
   </head>
-  <body onload="draw();">
-    <canvas id="tutorial" width="150" height="150"></canvas>
+  <body>
+
+  <canvas id="income" width="600" height="400"></canvas>
+
+  <script>
+
+    var barData = {
+    	labels : ["January","February","March","April","May","June"],
+    	datasets : [
+    		{
+    			fillColor : "#48A497",
+    			strokeColor : "#48A4D1",
+    			data : [456,479,324,569,702,600]
+    		},
+    		{
+    			fillColor : "rgba(73,188,170,0.4)",
+    			strokeColor : "rgba(72,174,209,0.4)",
+    			data : [364,504,605,400,345,320]
+    		}
+
+    	]
+    }
+
+    var income = document.getElementById("income").getContext("2d");
+    new Chart(income).Bar(barData);
+
+  </script>
+
   </body>
 </html>

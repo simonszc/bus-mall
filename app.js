@@ -6,9 +6,8 @@ function Product(productName, filePath) {
   this.filePath = filePath;
   this.timesClicked = 0;
   this.timesDisplayed = 0;
-  this.percentClicked = 0;
   this.findPercentClicked = function() {
-    this.percentClicked = (this.timesClicked / this.timesDisplayed).toFixed(2) * 100;
+    return (this.timesClicked / this.timesDisplayed).toFixed(2) * 100;
   }
 }
 
@@ -28,6 +27,7 @@ var allProducts = [new Product('bag', 'bag.jpg'),
                   new Product('usb', 'usb.jpg'),
                   new Product('water-can', 'water-can.jpg'),
                   new Product('winer-glass', 'wine-glass.jpg')];
+var alreadyDisplayed = [];
 
 //Display 3 Random, Unique Products for customer on page load. Create a function declaration, then call it.
 var displayedProductLeft = 0;
@@ -63,37 +63,38 @@ displayCenter.addEventListener('click', handleClickCenter);
 displayRight.addEventListener('click', handleClickRight);
 
 //Event handlers for all three displays. Should increment counter for clicked product, and display three new random, unique products
-function handleClickLeft(event) {
+
+function genericClickMethods() {
   console.log(event);
-  totalClicks += 1;
-  allProducts[displayedProductLeft].timesClicked += 1;
+  totalClicks +=1;
   allProducts[displayedProductLeft].timesDisplayed +=1;
   allProducts[displayedProductCenter].timesDisplayed +=1;
   allProducts[displayedProductRight].timesDisplayed +=1;
+  if (alreadyDisplayed.indexOf(displayedProductLeft) === -1) {
+    alreadyDisplayed.push(displayedProductLeft);
+  }
+  if (alreadyDisplayed.indexOf(displayedProductCenter) === -1) {
+    alreadyDisplayed.push(displayedProductCenter);
+  }
+  if (alreadyDisplayed.indexOf(displayedProductRight) === -1) {
+    alreadyDisplayed.push(displayedProductRight);
+  }
   checkForButton();
   displayProduct();
+}
+function handleClickLeft(event) {
+  allProducts[displayedProductLeft].timesClicked += 1;
+  genericClickMethods();
 }
 
 function handleClickCenter(event) {
-  console.log(event);
-  totalClicks += 1;
   allProducts[displayedProductCenter].timesClicked +=1;
-  allProducts[displayedProductLeft].timesDisplayed +=1;
-  allProducts[displayedProductCenter].timesDisplayed +=1;
-  allProducts[displayedProductRight].timesDisplayed +=1;
-  checkForButton();
-  displayProduct();
+  genericClickMethods();
 }
 
 function handleClickRight(event) {
-  console.log(event);
-  totalClicks +=1;
   allProducts[displayedProductRight].timesClicked +=1;
-  allProducts[displayedProductLeft].timesDisplayed +=1;
-  allProducts[displayedProductCenter].timesDisplayed +=1;
-  allProducts[displayedProductRight].timesDisplayed +=1;
-  checkForButton();
-  displayProduct();
+  genericClickMethods();
 }
 //if allClicks => 15, button is not hidden.
 var resultsButton = document.getElementById('resultsButton');
@@ -111,16 +112,69 @@ function checkForButton () {
 //event listener and handler for button
 resultsButton.addEventListener('click', handleButtonClick);
 
-function handleButtonClick(event) {
-  resultsButton.textContent = 'Display Updated Results';
-  var resultsDisplay = document.getElementById('resultsDisplay');
+function renderList() {
   resultsDisplay.textContent = '';
+  var errorMessage = document.createElement('p');
+  errorMessage.textContent = 'This data will render in a chart once all ' + allProducts.length + ' products have been displayed once. Thus far, ' + alreadyDisplayed.length + ' products have been displayed.';
+  resultsDisplay.appendChild(errorMessage);
   var displayList = document.createElement('ul');
   for (var i = 0; i < allProducts.length; i++) {
-    allProducts[i].findPercentClicked();
-    var productResults = document.createElement('li');
-    productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
-    displayList.appendChild(productResults);
+  allProducts[i].findPercentClicked();
+  var productResults = document.createElement('li');
+  productResults.textContent = allProducts[i].productName + ' has receieved ' + allProducts[i].timesClicked + ' clicks after being displayed ' + allProducts[i].timesDisplayed + ' times, for a ' + allProducts[i].percentClicked + '% selection rate';
+  displayList.appendChild(productResults);
   }
   resultsDisplay.appendChild(displayList);
 }
+
+function createRawClicksChart() {
+  var rawBarData = {
+    labels : [],
+    datasets : [
+      {
+        fillColor : "#B1FFFF",
+        strokeColor : "black",
+        data : []
+      },
+    ]
+  }
+  for (var i=0; i<allProducts.length; i++) {
+    rawBarData.labels.push(allProducts[i].productName);
+    rawBarData.datasets[0].data.push(allProducts[i].timesClicked);
+  }
+  var rawResults = document.getElementById("rawResultsChart").getContext("2d");
+  new Chart(rawResults).Bar(rawBarData);
+}
+function createPercentClickedChart() {
+  var percentBarData = {
+    labels: [],
+    datasets: [
+      {
+        fillColor: '#0E00C4',
+        strokeColor: 'black',
+        data: []
+      },
+    ]
+  }
+  for (var i = 0; i < allProducts.length; i ++) {
+    percentBarData.labels.push(allProducts[i].productName);
+    percentBarData.datasets[0].data.push(allProducts[i].findPercentClicked());
+  }
+  var percentResults = document.getElementById('percentResultsChart').getContext('2d');
+  new Chart(percentResults).Bar(percentBarData);
+}
+function handleButtonClick(event) {
+  if (alreadyDisplayed.length<14) {
+    resultsButton.textContent = 'Display Updated Results';
+    var resultsDisplay = document.getElementById('resultsDisplay');
+    renderList();
+  } else {
+    resultsButton.textContent = 'Display Updated Results';
+    var resultsDisplay = document.getElementById('resultsDisplay');
+    resultsDisplay.textContent = 'Left chart displays # of times each item was picked by user. Right chart displays # times each item was picked divided by # of times it was displayed, in percentages';
+    createRawClicksChart();
+    createPercentClickedChart();
+  }
+}
+
+//chart stuff
