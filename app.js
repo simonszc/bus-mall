@@ -6,11 +6,10 @@ function Product(productName, filePath) {
   this.filePath = filePath;
   this.timesClicked = 0;
   this.timesDisplayed = 0;
-  this.findPercentClicked = function() {
-    return (this.timesClicked / this.timesDisplayed).toFixed(2) * 100;
-  }
 }
-
+Product.prototype.findPercentClicked = function() {
+  return (this.timesClicked / this.timesDisplayed).toFixed(2) * 100;
+}
 var totalClicks = 0;
 //Place all 15 product objects into an array
 var allProducts = [new Product('bag', 'bag.jpg'),
@@ -126,15 +125,6 @@ function renderList() {
 }
 
 function createRawClicksChart() {
-  var chartsContainer = document.getElementById('chartsContainer')
-  var rawResults = document.getElementById('rawResultsChart');
-  chartsContainer.removeChild(rawResults);
-  rawResults = document.createElement('canvas');
-  rawResults.id = 'rawResultsChart';
-  rawResults.width = 750;
-  rawResults.height = 500;
-  chartsContainer.appendChild(rawResults)
-
   var rawBarData = {
     labels : [],
     datasets : [
@@ -159,14 +149,6 @@ function createRawClicksChart() {
   new Chart(rawResults).Bar(rawBarData);
 }
 function createPercentClickedChart() {
-  var chartsContainer = document.getElementById('chartsContainer')
-  var percentResults = document.getElementById('percentResultsChart');
-  chartsContainer.removeChild(percentResults);
-  percentResults = document.createElement('canvas');
-  percentResults.id = 'percentResultsChart';
-  percentResults.width = 750;
-  percentResults.height = 500;
-  chartsContainer.appendChild(percentResults)
   var percentBarData = {
     labels: [],
     datasets: [
