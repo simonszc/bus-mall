@@ -28,6 +28,15 @@ var allProducts = [new Product('bag', 'bag.jpg'),
                   new Product('winer-glass', 'wine-glass.jpg')];
 var alreadyDisplayed = [];
 
+//Initialize LS
+var chartData = localStorage.getItem('dataPersist');
+if (chartData) {
+  allProducts = JSON.parse(chartData);
+} else {
+  console.log('Local storage empty! Initializing!');
+  localStorage.setItem('dataPersist', JSON.stringify(allProducts));
+}
+
 //Display 3 Random, Unique Products for customer on page load. Create a function declaration, then call it.
 var displayedProductLeft, displayedProductCenter, displayedProductRight;
 var displayLeft = document.getElementById('displayLeft');
@@ -78,6 +87,7 @@ function genericClickMethods() {
   }
   checkForButton();
   displayProduct();
+  localStorage.setItem('dataPersist', JSON.stringify(allProducts));
 }
 function handleClickLeft(event) {
   allProducts[displayedProductLeft].timesClicked += 1;
@@ -108,6 +118,16 @@ function checkForButton () {
 
 //event listener and handler for button
 resultsButton.addEventListener('click', handleButtonClick);
+
+//Clear LS button
+
+var clearLS = document.getElementById('clearLS');
+var handleLSClear = function() {
+  console.log('Clearing Local Storage');
+  localStorage.clear();
+};
+
+clearLS.addEventListener('click', handleLSClear);
 
 function renderList() {
   resultsDisplay.textContent = '';
